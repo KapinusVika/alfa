@@ -1,0 +1,58 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Alfa Android - Minimal Acceptance" verbose="1" preserve-order="true">
+
+    <listeners>
+        <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
+    </listeners>
+
+    <test name="Verify user is able to login with valid credentials">
+        <classes>
+            <class name="com.alpha.test.mobile.login_tests.LoginTests">
+                <methods>
+                    <include name="verifyValidLoginTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <test name="Verify user is not able to login with invalid credentials">
+        <classes>
+            <class name="com.alpha.test.mobile.login_tests.LoginTests">
+                <methods>
+                    <include name="verifyInvalidLoginTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <test name="Verify the login field accepts fewer than 50 valid characters">
+        <classes>
+            <class name="com.alpha.test.mobile.login_tests.LoginTests">
+                <methods>
+                    <include name="verifyIncorrectLoginValueTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <test name="Verify the password field accepts fewer than 50 characters">
+        <classes>
+            <class name="com.alpha.test.mobile.login_tests.LoginTests">
+                <methods>
+                    <include name="verifyIncorrectPasswordValueTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <test name="Verify it is possible to show and hide entered password">
+        <classes>
+            <class name="com.alpha.test.mobile.login_tests.LoginTests">
+                <methods>
+                    <include name="verifyUserCanHideAndShowPasswordTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+</suite>
