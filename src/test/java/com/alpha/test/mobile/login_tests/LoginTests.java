@@ -30,23 +30,6 @@ public class LoginTests extends AbstractTest {
         Assert.assertTrue(homePage.isPageOpened(), "Home page is not opened!");
     }
 
-    @DataProvider(name = "invalidLoginData")
-    public Object[][] invalidLoginDataProvider() {
-        return new Object[][]{
-                {RANDOM_VALUE, RANDOM_VALUE},
-                {RANDOM_VALUE, ""},
-                {"", RANDOM_VALUE}
-        };
-    }
-
-    @Test(dataProvider = "invalidLoginData", description = "Verify user is not able to login with invalid data")
-    public void verifyInvalidLoginTest(String login, String password) {
-        LoginPage loginPage = initialiseLoginPage();
-        HomePage homePage = loginPage.login(login, password);
-        Assert.assertTrue(loginPage.isErrorMessagePresent(), "Error message is not present!");
-        Assert.assertFalse(homePage.isPageOpened(), "User is able to login with invalid data!");
-    }
-
     @Test(description = "Verify the login field accepts fewer than 50 valid characters")
     public void verifyIncorrectLoginValueTest() {
         SoftAssert softAssert = new SoftAssert();
@@ -62,6 +45,18 @@ public class LoginTests extends AbstractTest {
         softAssert.assertAll();
     }
 
+    @Test(description = "Verify it is possible to show and hide entered password")
+    public void verifyUserCanHideAndShowPasswordTest() {
+        SoftAssert softAssert = new SoftAssert();
+        LoginPage loginPage = initialiseLoginPage();
+        loginPage.typePassword(RANDOM_VALUE);
+        loginPage.clickShowHidePasswordButton();
+        softAssert.assertFalse(loginPage.isPasswordHidden(), "Entered password is not shown!");
+        loginPage.clickShowHidePasswordButton();
+        softAssert.assertTrue(loginPage.isPasswordHidden(), "Entered password is not hidden!");
+        softAssert.assertAll();
+    }
+
     @Test(description = "Verify the password field does not accept more than 50 characters")
     public void verifyIncorrectPasswordValueTest() {
         SoftAssert softAssert = new SoftAssert();
@@ -74,16 +69,22 @@ public class LoginTests extends AbstractTest {
         softAssert.assertAll();
     }
 
-    @Test(description = "Verify it is possible to show and hide entered password")
-    public void verifyUserCanHideAndShowPasswordTest() {
-        SoftAssert softAssert = new SoftAssert();
+    @DataProvider(name = "invalidLoginData")
+    public Object[][] invalidLoginDataProvider() {
+        return new Object[][]{
+                {RANDOM_VALUE, RANDOM_VALUE},
+                {RANDOM_VALUE, ""},
+                {"", RANDOM_VALUE},
+                {"", ""}
+        };
+    }
+
+    @Test(dataProvider = "invalidLoginData", description = "Verify user is not able to login with invalid data")
+    public void verifyInvalidLoginTest(String login, String password) {
         LoginPage loginPage = initialiseLoginPage();
-        loginPage.typePassword(RANDOM_VALUE);
-        loginPage.clickShowHidePasswordButton();
-        softAssert.assertFalse(loginPage.isPasswordHidden(), "Entered password is not shown!");
-        loginPage.clickShowHidePasswordButton();
-        softAssert.assertTrue(loginPage.isPasswordHidden(), "Entered password is not hidden!");
-        softAssert.assertAll();
+        HomePage homePage = loginPage.login(login, password);
+        Assert.assertTrue(loginPage.isErrorMessagePresent(), "Error message is not present!");
+        Assert.assertFalse(homePage.isPageOpened(), "User is able to login with invalid data!");
     }
 
     public String generateInvalidLogin() {
